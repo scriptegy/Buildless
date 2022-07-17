@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buildless</title>
+    <script src="buildless.js"></script>
+    <script>
+        function ComponentOne(data) {
+            if (!data.number) {
+                data.number = 0;
+            }
+            data.number++;
+            //return "yeet " + data.number;
+            return element("div").children(element("h1").innerHTML("yeet"),element("p").innerHTML(data.number));
+            //return element("div").children(element("h1").innerHTML("heyo"),element("h2").innerHTML("smaller heyo"));
+        }
+
+        function InitializerComponent() {
+            return element("ComponentOne").initialize({number:2000});
+        }
+    </script>
+</head>
+<body>
+    <InitializerComponent></InitializerComponent>
+</body>
+</html>
