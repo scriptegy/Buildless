@@ -12,8 +12,13 @@
             }
             data.number++;
             //return "yeet " + data.number;
-            return element("div").children(element("h1").innerHTML("yeet"),element("p").innerHTML(data.number));
+            return element("div").children(element("h1").innerHTML("yeet"),element("p").innerHTML(data.number)).backgroundColor("gray").padding(10).paddingLeft(30).borderRadius("10px");
+            console.log(elem.color);
             //return element("div").children(element("h1").innerHTML("heyo"),element("h2").innerHTML("smaller heyo"));
+        }
+
+        function PrettyButton(bucket) {
+            return element("button").innerHTML(bucket.content).innerHTML(bucket.content).padding(5).paddingLeft(10).paddingRight(10).borderRadius("5px").borderWidth(2).borderColor("black").background("white").fontWeight("bold").boxShadow("3px 3px 0px").fontFamily("inter").margin(10).marginTop(20);
         }
 
         function InitializerComponent() {
@@ -23,5 +28,6 @@
 </head>
 <body>
     <InitializerComponent></InitializerComponent>
+    <PrettyButton>Fancy Button</PrettyButton>
 </body>
 </html>
