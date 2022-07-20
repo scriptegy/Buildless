@@ -5,50 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buildless</title>
     <script src="buildless.js"></script>
-    <script>
-        function ComponentOne(data) {
-            if (!data.number) {
-                data.number = 0;
-            }
-            data.number++;
-            //return "yeet " + data.number;
-            return element("div").children(element("h1").innerHTML("yeet"),element("p").innerHTML(data.number)).backgroundColor("gray").padding(10).paddingLeft(30).borderRadius("10px");
-            console.log(elem.color);
-            //return element("div").children(element("h1").innerHTML("heyo"),element("h2").innerHTML("smaller heyo"));
-        }
-
-        function PrettyButton(bucket) {
-            return element("button").innerHTML(bucket.content).class("button").onclick(bucket.onclick);
-        }
-
-        function InitializerComponent() {
-            return element("ComponentOne").initialize({number:2000});
-        }
-        
-        function TitleCard(bucket) {
-            return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("p").innerHTML("A JS framework that doesn't suck").fontWeight("600")).fontFamily("Inter").textAlign("center");
-        }
-
-        function ButtonContainer(bucket) {
-            return element("span").children(element("PrettyButton").innerHTML("Download").initialize({onclick:function() {
-                fetch('buildless.js')
-                    .then(resp => resp.blob())
-                    .then(blob => {
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.style.display = 'none';
-                        a.href = url;
-                        a.download = 'buildless.js';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                    })
-                    .catch(() => alert('download failed :('));
-            }}),element("PrettyButton").innerHTML("Documentation").initialize({onclick:function() {
-                window.location.href = "documentation.html";
-            }})).display("flex").flexDirection("row").justifyContent("center");
-        }
-    </script>
+    <script src="components.js"></script>
     <style>
         body {
             padding : 50px;

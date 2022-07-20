@@ -1,2 +1,80 @@
-<!-- TODO: ACTUALLY MAKE IT-->
-not finished lmao
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <script src="buildless.js"></script>
+    <script src="components.js"></script>
+    <style>
+        body {
+            padding : 50px;
+        }
+        .button {
+            padding : 5px 10px;
+            border-radius : 5px;
+            border : 2px solid black;
+            background : white;
+            font-weight: bold;
+            font-family: 'Inter';
+            box-shadow : 3px 3px 0 black;
+            margin : 0px 5px;
+            transform : translate(-3px, -3px);
+            transition : 0.25s;
+            margin-right : 5px;
+            margin-bottom : 0;
+        }
+        .button:hover {
+            box-shadow : 2px 2px 0 black;
+            transform : translate(-2px, -2px);
+        }
+        p {
+            font-family : 'Inter';
+        }
+        tr {
+            border : 2px solid black;
+        }
+        td {
+            border : 2px solid black;
+            padding : 5px;
+            font-weight : 600;
+            font-size : 13px;
+            text-align : center;
+        }
+        table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow : 3px 3px 0 black;
+            overflow : hidden;
+        }
+        * {
+            font-family : 'Inter';
+        }
+        .webkit {
+            background : yellow;
+        }
+        .webkitheader {
+            position : sticky;
+            width : 100%;
+            left : 0;
+            top : 0;
+            padding : 10px;
+            background : rgba(0,0,0,0.1);
+            border-radius : 10px;
+            backdrop-filter : blur(15px);
+        }
+    </style>
+</head>
+<body>
+    <DocumentationTitleCard></DocumentationTitleCard>
+    <Header>Important Information:</Header>
+    <p>This is a framework based around elements. All custom elements have an input passed into the function called the data bucket. You can store element information in there. You can also get the initial innerHTML of the element by doing bucket.content. All changes of the bucket persist between calls. If you want to make a custom element, just define a function that returns the content of the element. First, create the base element, using element("element type goes here"), and then modify it by styling it, adding children, and more, then return it. If you want an example, look at the <a href="components.js">source code</a> of this website.</p>
+    <Header>Massive Table of All Element Functions</Header>
+    <br>
+    <div class="webkitheader"><label><input type="checkbox" id="showWebkit">Show Webkit specific functions</label></div>
+    <br>
+    <br>
+    <Gigatable></Gigatable>
+</body>
+</html>
