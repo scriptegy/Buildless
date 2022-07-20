@@ -127,6 +127,13 @@ class BuildlessElement {
         this.hash += data;
         this.hash = this._hash(this.hash);
     }
+
+    class(classList) {
+        for (var i = 0; i < classList.split(" ").length; i++) {
+            this.element.classList.add(classList.split(" ")[i]);
+        }
+        return this;
+    }
 }
 
 class ElementData {

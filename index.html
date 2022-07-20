@@ -18,16 +18,64 @@
         }
 
         function PrettyButton(bucket) {
-            return element("button").innerHTML(bucket.content).innerHTML(bucket.content).padding(5).paddingLeft(10).paddingRight(10).borderRadius("5px").borderWidth(2).borderColor("black").background("white").fontWeight("bold").boxShadow("3px 3px 0px").fontFamily("inter").margin(10).marginTop(20);
+            return element("button").innerHTML(bucket.content).class("button").onclick(bucket.onclick);
         }
 
         function InitializerComponent() {
             return element("ComponentOne").initialize({number:2000});
         }
+        
+        function TitleCard(bucket) {
+            return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("p").innerHTML("A JS framework that doesn't suck").fontWeight("600")).fontFamily("Inter").textAlign("center");
+        }
+
+        function ButtonContainer(bucket) {
+            return element("span").children(element("PrettyButton").innerHTML("Download").initialize({onclick:function() {
+                fetch('buildless.js')
+                    .then(resp => resp.blob())
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'buildless.js';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(() => alert('download failed :('));
+            }}),element("PrettyButton").innerHTML("Documentation").initialize({onclick:function() {
+                window.location.href = "documentation.html";
+            }})).display("flex").flexDirection("row").justifyContent("center");
+        }
     </script>
+    <style>
+        body {
+            padding : 50px;
+        }
+        .button {
+            padding : 5px 10px;
+            border-radius : 5px;
+            border : 2px solid black;
+            background : white;
+            font-weight: bold;
+            font-family: 'Inter';
+            box-shadow : 3px 3px 0 black;
+            margin : 0px 5px;
+            transform : translate(-3px, -3px);
+            transition : 0.25s;
+            margin-right : 5px;
+            margin-bottom : 0;
+        }
+        .button:hover {
+            box-shadow : 2px 2px 0 black;
+            transform : translate(-2px, -2px);
+        }
+    </style>
 </head>
 <body>
-    <InitializerComponent></InitializerComponent>
-    <PrettyButton>Fancy Button</PrettyButton>
+    <TitleCard></TitleCard>
+    <ButtonContainer>
+    </ButtonContainer>
 </body>
 </html>
