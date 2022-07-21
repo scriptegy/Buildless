@@ -80,3 +80,20 @@ function Gigatable(bucket) {
 function Header(bucket) {
     return element("span").text(bucket.content).fontSize(25).fontWeight(semibold);
 }
+
+function TimesNewBastard(bucket) {
+    var elm = element("div");
+    for (var i = 0; i < bucket.content.length; i++) {
+        var text = element("span");
+        text.text(bucket.content[i]);
+        if (i % 7 == 0) {
+            text.fontFamily('Inter');
+            text.fontSize(19);
+            text.fontWeight(semibold);
+        } else {
+            text.fontFamily('Times New Roman');
+        }
+        elm.children(text);
+    }
+    return elm;
+}
