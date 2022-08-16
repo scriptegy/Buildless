@@ -1,3 +1,26 @@
+var foreverConfig = {
+
+};
+
+function AppView(state) {
+    if (!buildless.state.page) {
+        buildless.state.page = "main";
+    }
+    if (buildless.state.page == "documentation") {
+        var div = element("div").padding(50);
+        div.children(element("DocumentationTitleCard"));
+        div.children(element("Header").text("Important Information:"));
+        div.children(element("p").innerHTML("This is a framework based around elements. All custom elements have an input passed into the function called the data bucket. You can store element information in there. You can also get the initial innerHTML of the element by doing bucket.content. All changes of the bucket persist between calls. If you want to make a custom element, just define a function that returns the content of the element. First, create the base element, using element('element type goes here'), and then modify it by styling it, adding children, and more, then return it. If you want an example, look at the <a href='components.js'>source code</a> of this website."));
+        div.children(element("Header").text("Massive Table of All Element Functions"));
+        div.children(element("br"));
+        div.children(element("div").class("webkitheader").children(element("label").children(element("input").type("checkbox").id("showWebkit"),element("span").text("Show webkit specific functions"))))
+        div.children(element("br"),element("br"));
+        div.children(element("Gigatable"));
+        return div;
+    }
+    return element("div").children(element("TitleCard"),element("ButtonContainer")).padding(50);
+}
+
 function ComponentOne(data) {
     if (!data.number) {
         data.number = 0;
@@ -18,11 +41,21 @@ function InitializerComponent() {
 }
 
 function TitleCard(bucket) {
-    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("p").innerHTML("A JS framework that doesn't suck").fontWeight("600")).fontFamily("Inter").textAlign("center");
+    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("Rainbow").innerHTML("Now with single-page support!").fontWeight("600")).fontFamily("Inter").textAlign("center");
 }
 
 function DocumentationTitleCard(bucket) {
     return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Documentation"),element("p").innerHTML("Documentation that might suck a little bit.").fontWeight("600")).fontFamily("Inter").textAlign("center");
+}
+
+function Rainbow(bucket) {
+    var elm = element("p");
+
+    for (var i = 0; i < bucket.content.length; i++) {
+        elm.children(element("span").innerHTML(bucket.content[i]).color(hsl(((new Date().getTime() + (i * 100)) / 10) % 360,100,50)));
+    }
+
+    return elm;
 }
 
 function ButtonContainer(bucket) {
@@ -41,7 +74,7 @@ function ButtonContainer(bucket) {
             })
             .catch(() => alert('download failed :('));
     }}),element("PrettyButton").innerHTML("Documentation").initialize({onclick:function() {
-        window.location.href = "documentation.html";
+        buildless.state.page = "documentation";
     }})).display("flex").flexDirection("row").justifyContent("center");
 }
 

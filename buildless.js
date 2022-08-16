@@ -5,6 +5,18 @@ var light = "200";
 var buildlessConfig = {
 };
 
+function rgba(r,g,b,a) {
+    return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+}
+
+function rgb(r,g,b) {
+    return "rgb(" + r + ", " + g + ", " + b + ")";
+}
+
+function hsl(h,s,l) {
+    return "hsl(" + h + ", " + s + "%, " + l + "%)";
+}
+
 window.onload = () => {
     buildless.build();
     setInterval(buildless.update, 0);
@@ -54,38 +66,109 @@ var buildless = {
 
             for (var j = 0; j < objects.length; j++) {
                 if (typeof window[i] == 'function') {
-                    if (!objects[j].data) {
-                        objects[j].data = new ElementData();
-                    }
-
-                    objects[j].data.getAttribute = objects[j].getAttribute;
-
-                    if (!objects[j].data.content) {
-                        objects[j].data.content = objects[j].innerHTML;
-                    }
-
-                    var output = window[i](objects[j].data);
-                
-                    if (output.element) {
-                        if (buildlessConfig.showHashLogs) {
-                            console.log(output.hash);
+                    // and because fuck logic we have whatever the hell this is
+                    if (!objects[j].blockUpdates) {
+                        if (!objects[j].data) {
+                            objects[j].data = new ElementData();
                         }
-                        if (objects[j].output != output.hash) {
-                            if (objects[j].firstChild != null) {
-                                objects[j].removeChild(objects[j].firstChild);
+    
+                        objects[j].data.getAttribute = objects[j].getAttribute;
+    
+                        if (!objects[j].data.content) {
+                            objects[j].data.content = objects[j].innerHTML;
+                        }
+    
+                        var output = window[i](objects[j].data);
+                    
+                        if (output.element) {
+                            if (buildlessConfig.showHashLogs) {
+                                console.log(output.hash);
                             }
-                            objects[j].appendChild(output.element);
-                            objects[j].output = output.hash;
-                        }
-                    } else {
-                        if (objects[j].output != output) {
-                            objects[j].innerHTML = output;
-                            objects[j].output = output;
+                            if (objects[j].output != output.hash) {
+                                if (objects[j].firstChild != null) {
+                                    objects[j].removeChild(objects[j].firstChild);
+                                }
+                                objects[j].appendChild(output.element);
+                                objects[j].output = output.hash;
+                            }
+                        } else {
+                            if (objects[j].output != output) {
+                                objects[j].innerHTML = output;
+                                objects[j].output = output;
+                            }
                         }
                     }
                 }
             }
         }
+        buildless.foreverUpdate();
+    },
+    foreverPane1Position:0,
+    foreverPane2Position:1,
+    foreverPreviousState:null,
+    foreverPane:false,
+    state:{},
+    foreverUpdate: function() {
+        if (window.foreverConfig) {
+            /*if (JSON.stringify(buildless.state) != buildless.foreverPreviousState) {
+                buildless.foreverPreviousState = JSON.stringify(buildless.state);
+                buildless.foreverPane = !buildless.foreverPane;
+                if (buildless.foreverPane) {
+                    foreverPane2Position = 1;    
+                    document.getElementById("foreverPane1").blockUpdates = true;
+                    document.getElementById("foreverPane2").blockUpdates = false;
+                } else {
+                    foreverPane1Position = 1;
+                    document.getElementById("foreverPane1").blockUpdates = false;
+                    document.getElementById("foreverPane2").blockUpdates = true;
+                }
+                console.log("transition! " + buildless.foreverPane);
+            }
+            if (!document.getElementById("foreverPane1")) {
+                var foreverPane1 = document.createElement("AppView");
+                foreverPane1.style.width = "100vw";
+                foreverPane1.style.height = "100vh";
+                foreverPane1.id = "foreverPane1";
+                document.body.appendChild(foreverPane1);
+            }
+            if (!document.getElementById("foreverPane2")) {
+                var foreverPane2 = document.createElement("AppView");
+                foreverPane2.style.width = "100vw";
+                foreverPane2.style.height = "100vh";
+                foreverPane2.id = "foreverPane2";
+                document.body.appendChild(foreverPane2);
+            }
+            var foreverPane1 = document.getElementById("foreverPane1");
+            var foreverPane2 = document.getElementById("foreverPane2");
+            foreverPane1.style.position = "fixed";
+            foreverPane1.style.left = buildless.foreverPane1Position * innerWidth;
+            foreverPane1.style.top = 0;
+            foreverPane2.style.position = "fixed";
+            foreverPane2.style.left = buildless.foreverPane2Position * innerWidth;
+            foreverPane2.style.top = 0;
+            if (buildless.foreverPane) {
+                buildless.foreverPane1Position += (-1 - buildless.foreverPane1Position) * 0.01;
+                buildless.foreverPane2Position += (0 - buildless.foreverPane2Position) * 0.01;
+            } else {
+                buildless.foreverPane1Position += (0 - buildless.foreverPane1Position) * 0.01;
+                buildless.foreverPane2Position += (-1 - buildless.foreverPane2Position) * 0.01;
+            }*/
+            if (!buildless.screenPanel) {
+                buildless.screenPanel = document.createElement("AppView");
+                buildless.screenPanel.style.position = "fixed";
+                buildless.screenPanel.style.left = 0;
+                buildless.screenPanel.style.top = 0;
+                buildless.screenPanel.style.width = "100vw";
+                buildless.screenPanel.style.height = "100vh";
+                buildless.screenPanel.style.backgroundColor = "white";
+                buildless.screenPanel.data = buildless.state;
+                buildless.screenPanel.style.overflow = "scroll";
+                document.body.appendChild(buildless.screenPanel);
+            }
+        }
+    },
+    lerp: function (a,b,t) {
+        return (a * (t - 1)) + (b * t);
     },
     hash: function (input) {
         var hash = 0, i, chr;
@@ -112,6 +195,13 @@ class BuildlessElement {
         this.element.innerText = html;
         this.addHashData("html");
         this.addHashData(html);
+        return this;
+    }
+
+    color(color) {
+        this.element.style.color = color;
+        this.addHashData("colorhotfix");
+        this.addHashData(color);
         return this;
     }
 
