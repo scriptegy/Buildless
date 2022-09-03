@@ -78,7 +78,11 @@ var buildless = {
                             objects[j].data.content = objects[j].innerHTML;
                         }
     
-                        var output = window[i](objects[j].data);
+                        try {
+                            var output = window[i](objects[j].data);
+                        } catch (e) {
+                            var output = e;
+                        }
                     
                         if (output.element) {
                             if (buildlessConfig.showHashLogs) {
@@ -241,6 +245,11 @@ class BuildlessElement {
         for (var i = 0; i < classList.split(" ").length; i++) {
             this.element.classList.add(classList.split(" ")[i]);
         }
+        return this;
+    }
+    
+    contentEditable() {
+        this.element.setAttribute("contentEditable","true");
         return this;
     }
 }
