@@ -90,7 +90,7 @@ function InitializerComponent() {
 }
 
 function TitleCard(bucket) {
-    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("Rainbow").innerHTML("slightly less shitty then before :)").fontWeight("600")).fontFamily("Inter").textAlign("center");
+    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("Rainbow").innerHTML("slightly less sh*tty then before :)").fontWeight("600")).fontFamily("Inter").textAlign("center");
 }
 
 function DocumentationTitleCard(bucket) {
