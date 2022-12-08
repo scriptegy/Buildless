@@ -2,16 +2,50 @@ var foreverConfig = {
 
 };
 
-function AppView(state) {
-    if (!buildless.state.page) {
-        buildless.state.page = "main";
+function App(state) {
+    if (!window.location.hash) {
+        window.location.hash = "#main";
     }
-    if (buildless.state.page == "documentation") {
+    if (window.location.hash == "#documentation") {
         var div = element("div").padding(50);
         div.children(element("DocumentationTitleCard"));
-        div.children(element("Header").text("Important Information:"));
-        div.children(element("p").innerHTML("This is a framework based around elements. All custom elements have an input passed into the function called the data bucket. You can store element information in there. You can also get the initial innerHTML of the element by doing bucket.content. All changes of the bucket persist between calls. If you want to make a custom element, just define a function that returns the content of the element. First, create the base element, using element('element type goes here'), and then modify it by styling it, adding children, and more, then return it. If you want an example, look at the <a href='components.js'>source code</a> of this website."));
-        div.children(element("Header").text("Massive Table of All Element Functions"));
+        div.children(element("Header").text("Usage"));
+        div.children(element("p").innerHTML(`
+The core function of buildless is for making Components. <br>
+Components are functions with the following signature <br>
+<br>
+<quote>
+${Example.toString()}
+</quote>
+<br>
+This code produces the following:
+		`));
+		div.children(element("Example"));
+		div.children(element("p").innerHTML(`
+			This code works by <br> 
+			1. Initializing bucket.count <br>
+			2. Incrementing bucket.count <br>
+			3. Creating a new "p" element, and safely setting its text to bucket.count, without risk of XSS <br>
+			4. Returning said element
+		`));
+		div.children(element("p").innerHTML(`
+Another important function you are likely to use a lot is .children(), <br>
+You can use it like this:
+<br>
+<quote>
+${Example2.toString()}
+</quote>
+<br>
+Which renders as
+		`));
+		div.children(element("Example2"));
+		div.children(element("p").innerHTML(`
+		Please note, these are only counting in sync because they are initialized in sync, NOT because they're the same component. Multiple instances of the same component do not share data.
+		`));
+		div.children(element("p").innerHTML(`
+		More modifiers are documented below.
+		`));
+        div.children(element("Header").text("Properties"));
         div.children(element("br"));
         div.children(element("div").class("webkitheader").children(element("label").children(element("input").type("checkbox").id("showWebkit"),element("span").text("Show webkit specific functions"))))
         div.children(element("br"),element("br"));
@@ -19,6 +53,21 @@ function AppView(state) {
         return div;
     }
     return element("div").children(element("TitleCard"),element("ButtonContainer")).padding(50);
+}
+
+function Example(bucket) {
+	//store data in bucket
+	//ex:
+	if (!bucket.count) {
+		bucket.count = 1;
+	}
+	bucket.count++;
+	// return content
+	return element("p").text(bucket.count);
+}
+
+function Example2(bucket) {
+	return element("div").children(element("Example"),element("Example"),element("Example")); // returns three example components
 }
 
 function ComponentOne(data) {
@@ -41,11 +90,11 @@ function InitializerComponent() {
 }
 
 function TitleCard(bucket) {
-    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("Rainbow").innerHTML("Now with single-page support!").fontWeight("600")).fontFamily("Inter").textAlign("center");
+    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Buildless"),element("Rainbow").innerHTML("slightly less shitty then before :)").fontWeight("600")).fontFamily("Inter").textAlign("center");
 }
 
 function DocumentationTitleCard(bucket) {
-    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Documentation"),element("p").innerHTML("Documentation that might suck a little bit.").fontWeight("600")).fontFamily("Inter").textAlign("center");
+    return element("div").children(element("span").fontSize(30).fontWeight("bold").innerHTML("Documentation"),element("p").innerHTML("The new and improved documentation.").fontWeight("600")).fontFamily("Inter").textAlign("center");
 }
 
 function Rainbow(bucket) {
@@ -59,7 +108,7 @@ function Rainbow(bucket) {
 }
 
 function ButtonContainer(bucket) {
-    return element("span").children(element("PrettyButton").innerHTML("Download").initialize({onclick:function() {
+    return element("span").children(element("PrettyButton").text("Download").initialize({onclick:function() {
         fetch('buildless.js')
             .then(resp => resp.blob())
             .then(blob => {
@@ -73,8 +122,16 @@ function ButtonContainer(bucket) {
                 window.URL.revokeObjectURL(url);
             })
             .catch(() => alert('download failed :('));
-    }}),element("PrettyButton").innerHTML("Documentation").initialize({onclick:function() {
-        buildless.state.page = "documentation";
+    }}),element("PrettyButton").text("Documentation").initialize({onclick:function() {
+        window.location.hash = "#documentation";
+    }}),element("PrettyButton").text("Contact").initialize({onclick:function() {
+        window.location.href = "mailto:scriptegyofficial@gmail.com"
+    }}),element("PrettyButton").text("Share").initialize({onclick:function() {
+        navigator.share({
+			title: 'Buildless',
+			text: 'The framework without a build step.',
+			url: window.location.href
+		  });
     }})).display("flex").flexDirection("row").justifyContent("center");
 }
 
@@ -82,9 +139,9 @@ function Gigatable(bucket) {
     var showWebkit = document.getElementById("showWebkit").checked;
     var table = [
         { name: "text", type:"✨Special✨", description: "This safely sets the text inside the element, without risk of XSS." },
-        { name: "class", type:"✨Special✨", description: "This adds classes to the element" },
-        { name: "children", type:"✨Special✨", description: "Adds children to an element. Don't pass in an array, just multiple inputs." },
-        { name: "initialize", type:"✨Special✨", description: "Sets the content of the data bucket." },
+        { name: "class", type:"✨Special✨", description: "This adds classes to the element. ex: element.class('one two three'), will add the classes one, two, and three" },
+        { name: "children", type:"✨Special✨", description: "Adds children to an element. Don't pass in an array, just multiple inputs. This can be called multiple times." },
+        { name: "initialize", type:"✨Special✨", description: "Sets the content of the bucket. This does nothing for normal HTML elements, it only sends information to components." },
     ];
     for (var i = 0; i < buildless.attributes.length; i++) {
         if (!buildless.attributes[i].includes("webkit") || showWebkit) {

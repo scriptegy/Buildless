@@ -105,72 +105,11 @@ var buildless = {
                 }
             }
         }
-        buildless.foreverUpdate();
     },
     foreverPane1Position:0,
     foreverPane2Position:1,
     foreverPreviousState:null,
     foreverPane:false,
-    state:{},
-    foreverUpdate: function() {
-        if (window.foreverConfig) {
-            /*if (JSON.stringify(buildless.state) != buildless.foreverPreviousState) {
-                buildless.foreverPreviousState = JSON.stringify(buildless.state);
-                buildless.foreverPane = !buildless.foreverPane;
-                if (buildless.foreverPane) {
-                    foreverPane2Position = 1;    
-                    document.getElementById("foreverPane1").blockUpdates = true;
-                    document.getElementById("foreverPane2").blockUpdates = false;
-                } else {
-                    foreverPane1Position = 1;
-                    document.getElementById("foreverPane1").blockUpdates = false;
-                    document.getElementById("foreverPane2").blockUpdates = true;
-                }
-                console.log("transition! " + buildless.foreverPane);
-            }
-            if (!document.getElementById("foreverPane1")) {
-                var foreverPane1 = document.createElement("AppView");
-                foreverPane1.style.width = "100vw";
-                foreverPane1.style.height = "100vh";
-                foreverPane1.id = "foreverPane1";
-                document.body.appendChild(foreverPane1);
-            }
-            if (!document.getElementById("foreverPane2")) {
-                var foreverPane2 = document.createElement("AppView");
-                foreverPane2.style.width = "100vw";
-                foreverPane2.style.height = "100vh";
-                foreverPane2.id = "foreverPane2";
-                document.body.appendChild(foreverPane2);
-            }
-            var foreverPane1 = document.getElementById("foreverPane1");
-            var foreverPane2 = document.getElementById("foreverPane2");
-            foreverPane1.style.position = "fixed";
-            foreverPane1.style.left = buildless.foreverPane1Position * innerWidth;
-            foreverPane1.style.top = 0;
-            foreverPane2.style.position = "fixed";
-            foreverPane2.style.left = buildless.foreverPane2Position * innerWidth;
-            foreverPane2.style.top = 0;
-            if (buildless.foreverPane) {
-                buildless.foreverPane1Position += (-1 - buildless.foreverPane1Position) * 0.01;
-                buildless.foreverPane2Position += (0 - buildless.foreverPane2Position) * 0.01;
-            } else {
-                buildless.foreverPane1Position += (0 - buildless.foreverPane1Position) * 0.01;
-                buildless.foreverPane2Position += (-1 - buildless.foreverPane2Position) * 0.01;
-            }*/
-            if (!buildless.screenPanel) {
-                buildless.screenPanel = document.createElement("AppView");
-                buildless.screenPanel.style.position = "fixed";
-                buildless.screenPanel.style.left = 0;
-                buildless.screenPanel.style.top = 0;
-                buildless.screenPanel.style.width = "100vw";
-                buildless.screenPanel.style.height = "100vh";
-                buildless.screenPanel.style.backgroundColor = "white";
-                buildless.screenPanel.data = buildless.state;
-                buildless.screenPanel.style.overflow = "scroll";
-                document.body.appendChild(buildless.screenPanel);
-            }
-        }
-    },
     lerp: function (a,b,t) {
         return (a * (t - 1)) + (b * t);
     },
